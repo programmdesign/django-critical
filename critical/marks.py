@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
 CRITICAL_MARK_BEGIN = '<!-- BEGIN: django-critical css ('
 CRITICAL_MARK_END = ') END: django-critical css -->'
 CRITICAL_ASYNC_MARK = '<!-- django-critical async snippet -->'
