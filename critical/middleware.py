@@ -32,8 +32,14 @@ class CriticalCssMiddleware(object):
     encoding = settings.CRITICAL_ENCODING
 
     def process_response(self, request, response):
-        if response.streaming or request.accepts('application/json'):
+        if response.streaming:
             return response
+
+        try:
+            if request.accepts('application/json'):
+                return response
+        except:
+            pass
 
         content = response.content.decode(self.encoding)
 
