@@ -101,6 +101,43 @@ applications have different critical path CSS for different groups of pages,
 though. This can be solved using the ``{% critical_key "<key>" %}`` template
 tag, so that different templates can have different caching keys.
 
+Most likely, you'll have your CSS files in a base template. If you put a key
+like e.g., 'base' into your base template, this key will be used, even if
+your add another critical key tag to a child template. However, you don't have
+to move your CSS to your child templates to render them with differnt keys.
+Just load the ``<key>`` dynamically and pass it to your base template.
+
+1. Add critical to your ``base template``
+
+    .. code-block:: html
+
+        {% load critical %}
+        {% critical_key key %}
+        ...
+        <head>
+            {% critical %}
+            <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+            {% endcritical %}
+        </head>
+        ...
+
+2. Add a key to the context of your view (e.g,. the view's name)
+
+    .. code-block:: python
+
+        def my_view(request, foo):
+
+            context = {
+                'key': 'blog'
+            }
+
+You can either set the ``key`` to the same value for several views
+(e.g., to all your views rendering your blog), or you can have a distinct
+``key`` per page.
+
+    .. note:: The critical key block in your base template overwrites any
+        critical keys of your child templates.
+
 Is this stable and ready for production use?
 --------------------------------------------
 
